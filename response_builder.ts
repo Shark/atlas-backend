@@ -8,4 +8,4 @@ const buildResponse = (body: object, statusCode: number = 200) => {
     }
 }
 
-module.exports = buildResponse;
+export default buildResponse;
