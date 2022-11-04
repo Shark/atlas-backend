@@ -17,6 +17,8 @@ provider:
 plugins:
   - serverless-plugin-typescript
 
+useDotenv: true
+
 # The `functions` block defines what code to deploy
 functions:
   openaiRequest:
