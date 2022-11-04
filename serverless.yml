@@ -14,6 +14,9 @@ provider:
   name: aws
   runtime: nodejs12.x
 
+plugins:
+  - serverless-plugin-typescript
+
 # The `functions` block defines what code to deploy
 functions:
   openaiRequest:
