@@ -7,7 +7,7 @@ const openai = new OpenAIApi(configuration);
 
 import buildResponse from '../util/response_builder';
 
-const numberOfImages = 1;
+const numberOfImages = 3;
 const imageSize = "256x256"; // possible: "256x256", "512x512", "1024x1024"
 
 type RequestBody = {
@@ -34,9 +34,9 @@ const withImages = async (event: RequestBody, callback: Function) => {
             numberOfImages,
             imageSize,
         );
-        const imageUrl = openaiResponse.data.data[0].url;
+        const imageUrls = openaiResponse.data.data.map((image: any) => image.url);
 
-        callback(null, buildResponse({url: imageUrl}));
+        callback(null, buildResponse({urls: imageUrls}));
     } catch(error: any) {
         const errorMessage = error.response?.data?.error?.message;
         callback(null, buildResponse({reason: "OpenaiError", error: errorMessage}, 400));
@@ -53,9 +53,9 @@ const withoutImages = async (event: RequestBody, callback: Function) => {
             n: numberOfImages, // number of images to return
             size: imageSize,
         });
-        const imageUrl = openaiResponse.data.data[0].url;
+        const imageUrls = openaiResponse.data.data.map((image: any) => image.url);
 
-        callback(null, buildResponse({url: imageUrl}));
+        callback(null, buildResponse({urls: imageUrls}));
     } catch(error: any) {
         const errorMessage = error.response?.data?.error?.message;
         callback(null, buildResponse({reason: "OpenaiError", error: errorMessage}, 400));
