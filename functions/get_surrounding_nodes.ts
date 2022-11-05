@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from 'axios';
 import { point } from "@turf/turf";
 
 
@@ -7,7 +7,7 @@ import { OverpassResponseMapper } from '../model/mapper/overpass';
 import { NominatimResponseMapper } from '../model/mapper/nominatim';
 
 const overpassURl = "https://overpass-api.de/api/interpreter";
-const overpassOptions = {headers: {"Content-Type": "text/plain"}};
+const overpassOptions = {headers: {"Content-Type": "text/plain", "Accept-Language": "en"}};
 const overpassRadius = 10_000;
 
 const nominatimResponseMapper = new NominatimResponseMapper();
@@ -22,7 +22,7 @@ type RequestBody = {
 }
 
 const fetchNominatim = async (location: RequestBody['location']) => {
-    const response = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${location.latitude}&lon=${location.longitude}&zoom=18&addressdetails=1`);
+    const response = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${location.latitude}&lon=${location.longitude}&zoom=18&addressdetails=1`, {headers: {"Accept-Language": "en"}});
     const data = response.data;
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

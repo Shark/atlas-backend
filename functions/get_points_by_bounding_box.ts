@@ -3,7 +3,7 @@ import { OverpassResponseMapper } from "../model/mapper/overpass";
 import buildResponse from "../util/response_builder";
 
 const overpassURl = "https://overpass-api.de/api/interpreter";
-const overpassOptions = {headers: {"Content-Type": "text/plain"}};
+const overpassOptions = {headers: {"Content-Type": "text/plain", "Accept-Language": "en"}};
 const overpassResponseMapper = new OverpassResponseMapper();
 
 type RequestBody = {
