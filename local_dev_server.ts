@@ -8,12 +8,11 @@ app.use(cors());
 app.use(express.json({limit: '50mb'}));
 
 app.post('*', (req: any, res: any) => {
-    const path = req.path.slice(1); // slices out first '/
+    const path = req.path.slice(1); // slices out first '/'
 
     // call handler with body, context as null and response handler callback
     handler[path](req.body, null, (_: any, response: any) => {
         const {statusCode, headers, body} = response;
-
 
         res.set(headers);
         res.status(statusCode)
