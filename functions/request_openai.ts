@@ -7,16 +7,19 @@ const openai = new OpenAIApi(configuration);
 
 import buildResponse from '../util/response_builder';
 
+const numberOfImages = 1;
+const imageSize = "256x256"; // possible: "256x256", "512x512", "1024x1024"
+
 type RequestBody = {
     prompt: string;
-    images: {
+    images?: {
         full: string;
         masked: string;
     };
 }
 
-module.exports = async (event: RequestBody, context: any, callback: Function) => {
-    const [fullImagePath, maskedImagePath] = [event.images.full, event.images.masked].map((image: string) => {
+const withImages = async (event: RequestBody, callback: Function) => {
+    const [fullImagePath, maskedImagePath] = [event.images!.full, event.images!.masked].map((image: string) => {
         const base64Data = image.replace(/^data:image\/png;base64,/, "");
         const fileName = `${uuidv4()}.png`;
         fs.writeFileSync(fileName, base64Data, 'base64');
@@ -28,8 +31,8 @@ module.exports = async (event: RequestBody, context: any, callback: Function) =>
             fs.createReadStream(fullImagePath),
             fs.createReadStream(maskedImagePath),
             event.prompt,
-            1, // number of images to return
-            "256x256", // possible: "256x256", "512x512", "1024x1024"
+            numberOfImages,
+            imageSize,
         );
         const imageUrl = openaiResponse.data.data[0].url;
 
@@ -40,5 +43,29 @@ module.exports = async (event: RequestBody, context: any, callback: Function) =>
     } finally {
         fs.unlinkSync(fullImagePath);
         fs.unlinkSync(maskedImagePath);
+    }
+}
+
+const withoutImages = async (event: RequestBody, callback: Function) => {
+    try {
+        const openaiResponse = await openai.createImage({
+            prompt: event.prompt,
+            n: numberOfImages, // number of images to return
+            size: imageSize,
+        });
+        const imageUrl = openaiResponse.data.data[0].url;
+
+        callback(null, buildResponse({url: imageUrl}));
+    } catch(error: any) {
+        const errorMessage = error.response?.data?.error?.message;
+        callback(null, buildResponse({reason: "OpenaiError", error: errorMessage}, 400));
+    }
+}
+
+module.exports = async (event: RequestBody, context: any, callback: Function) => {
+    if (event.images) {
+        withImages(event, callback);
+    } else {
+        withoutImages(event, callback);
     }
 }
