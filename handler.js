@@ -1,5 +1,5 @@
-const createPrompt = require('./create_prompt');
-const openaiRequest = require('./openai_request');
+const createPrompt = require('./functions/create_prompt');
+const openaiRequest = require('./functions/openai_request');
 
 module.exports = {
   createPrompt,

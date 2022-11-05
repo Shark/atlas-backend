@@ -4,7 +4,7 @@ const configuration = new Configuration({apiKey: process.env.OPENAI_API_KEY});
 const openai = new OpenAIApi(configuration);
 
 // import responseBuilder
-import buildResponse from './response_builder';
+import buildResponse from '../util/response_builder';
 
 // expects a request body in the format: { "prompt": "This is a test prompt." }
 module.exports = async (event: {prompt: String}, context: any, callback: Function) => {
