@@ -15,31 +15,13 @@ type RequestBody = {
     };
 }
 
-const downloadFile = async (url: string): Promise<string> => {
-    const path = `tmp/${uuidv4()}.png`;
-    const writer = fs.createWriteStream(path);
-    const response = await axios.get(url, { responseType: 'stream' });
-    response.data.pipe(writer);
-    try {
-        await new Promise((resolve, reject) => {
-            writer.on('finish', resolve);
-            writer.on('error', reject);
-        });
-    } catch (error) {
-        throw error;
-    }
-
-    return path;
-}
-
 module.exports = async (event: RequestBody, context: any, callback: Function) => {
-    const downloadPromises = [event.images.full, event.images.masked].map((url: string) => downloadFile(url));
-    var fullImagePath: string, maskedImagePath: string;
-    try {
-        [fullImagePath, maskedImagePath] = await Promise.all(downloadPromises);
-    } catch (error: any) {
-        return callback(null, buildResponse({error: error.message}, 400));
-    }
+    const [fullImagePath, maskedImagePath] = [event.images.full, event.images.masked].map((image: string) => {
+        const base64Data = image.replace(/^data:image\/png;base64,/, "");
+        const fileName = `${uuidv4()}.png`;
+        fs.writeFileSync(fileName, base64Data, 'base64');
+        return fileName;
+    })
 
     try {
         const openaiResponse = await openai.createImageEdit(
@@ -54,7 +36,7 @@ module.exports = async (event: RequestBody, context: any, callback: Function) =>
         callback(null, buildResponse({url: imageUrl}));
     } catch(error: any) {
         const errorMessage = error.response?.data?.error?.message;
-        callback(null, buildResponse({reason: "OpenaiErrorclass", error: errorMessage}, 400));
+        callback(null, buildResponse({reason: "OpenaiError", error: errorMessage}, 400));
     } finally {
         fs.unlinkSync(fullImagePath);
         fs.unlinkSync(maskedImagePath);
