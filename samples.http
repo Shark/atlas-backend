@@ -16,3 +16,13 @@ Content-Type: application/json
     "longitude": 24.832324
   }
 }
+
+POST http://localhost:3000/getPointsByBoundingBox
+Content-Type: application/json
+
+{
+  "south": 60.184720,
+  "west": 24.832324,
+  "north": 60.184720,
+  "east": 24.832324
+}
