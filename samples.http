@@ -2,7 +2,11 @@ POST http://localhost:3000/requestOpenai
 Content-Type: application/json
 
 {
-  "prompt": "A flying bird"
+  "prompt": "a sunlit indoor lounge area with a pool containing a flamingo",
+  "images": {
+    "full": "https://uni-muenster.sciebo.de/index.php/apps/files_sharing/ajax/publicpreview.php?x=4112&y=1592&a=true&file=full_image.png&t=rukNn4SrRC3tLx6&scalingup=0",
+    "masked": "r"
+  }
 }
 
 ###
