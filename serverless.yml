@@ -26,7 +26,7 @@ functions:
     # The `events` block defines how to trigger the handler.helloWorld code
     events:
       - http:
-          path: openai-request
+          path: openaiRequest
           method: post
           cors: true
 
@@ -35,6 +35,6 @@ functions:
     # The `events` block defines how to trigger the handler.helloWorld code
     events:
       - http:
-          path: create-prompt
+          path: createPrompt
           method: post
           cors: true

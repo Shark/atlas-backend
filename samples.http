@@ -1,0 +1,18 @@
+POST http://localhost:3000/openaiRequest
+Content-Type: application/json
+
+{
+  "prompt": "A flying bird"
+}
+
+###
+
+POST http://localhost:3000/createPrompt
+Content-Type: application/json
+
+{
+  "location": {
+    "latitude": 37.7749295,
+    "longitude": -122.084
+  }
+}

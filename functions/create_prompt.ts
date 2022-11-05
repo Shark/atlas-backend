@@ -47,7 +47,7 @@ const fetchOverpass = async (location: RequestBody['location']) => {
     var response: any;
     try {
         response = await axios.post(overpassURl, body, overpassOptions);
-    } catch (error) {
+    } catch (error: any) {
         const responseData = error.response.data;
         const mapped = responseData
             .split("\n")
