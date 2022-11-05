@@ -1,4 +1,5 @@
-import { distance, point, Coord } from "@turf/turf";
+import { distance, point, Coord, clustersDbscan, featureCollection, convex, centroid } from "@turf/turf";
+import { parse } from 'csv-parse/sync';
 import { Feature } from "../place";
 import Tags from './tags.json';
 
@@ -20,9 +21,9 @@ export class OverpassResponseMapper {
         const searchKey = `${key}=${value}`;
         var coords: Coord;
         if('lat' in element && 'lon' in element) {
-          coords = point([element.lat, element.lon]);
+          coords = point([element.lon, element.lat]);
         } else if('center' in element && 'lat' in element.center && 'lon' in element.center) {
-          coords = point([element.center.lat, element.center.lon]);
+          coords = point([element.center.lon, element.center.lat]);
         } else {
           throw new Error('fail')
         }
@@ -60,5 +61,50 @@ export class OverpassResponseMapper {
     }
 
     return filteredFeatures;
+  }
+
+  // response is a ;-separated CSV document with lat;lon
+  cluster(response: any): Coord[] {
+    const records = parse(response, { delimiter: ';', columns: true });
+
+    const allCoords = records.map((r: any) => {
+      return point([r['@lon'], r['@lat']])
+    });
+
+    const clustered = clustersDbscan(featureCollection(allCoords), 8, {});
+    const byCluster = clustered.features.reduce((o: any, val: any) => {
+      const clusterNumber = val.properties.cluster;
+      if(typeof clusterNumber === 'undefined') return o
+      if(!o[clusterNumber]) o[clusterNumber] = []
+      o[clusterNumber].push(val.geometry.coordinates)
+      return o
+    }, {});
+
+    const hullByCluster = {}
+    for(const clusterNumber in byCluster) {
+      const thisCollection = featureCollection(byCluster[clusterNumber].map((p: any) => point([Number(p[0]), Number(p[1])])));
+      const hull = convex(thisCollection);
+      if(hull === null) continue
+      // @ts-ignore
+      hullByCluster[clusterNumber] = {
+        n: byCluster[clusterNumber].length,
+        hull
+      };
+    }
+
+    const centroidByCluster = []
+    for(const clusterNumber in hullByCluster) {
+      // @ts-ignore
+      const { n, hull } = hullByCluster[clusterNumber];
+      const point = centroid(hull);
+      centroidByCluster.push({
+        n,
+        point,
+      })
+    }
+
+    centroidByCluster.sort((a, b) => b.n - a.n);
+
+    return centroidByCluster.slice(0, 5).map(p => p.point);
   }
 }
