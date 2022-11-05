@@ -30,6 +30,5 @@ test('overpass', t => {
 test('overpass 2', t => {
 	const mapper = new OverpassResponseMapper();
 	const result = mapper.map(OverpassResult2, point([50.94212, 6.95779]));
-	console.log(result)
 	t.assert(result);
 })
