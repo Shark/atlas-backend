@@ -9,6 +9,7 @@ import { NominatimResponseMapper } from '../model/mapper/nominatim';
 const overpassURl = "https://overpass-api.de/api/interpreter";
 const overpassOptions = {headers: {"Content-Type": "text/plain", "Accept-Language": "en"}};
 const overpassRadius = 10_000;
+const timeout = 100;
 
 const nominatimResponseMapper = new NominatimResponseMapper();
 const overpassResponseMapper = new OverpassResponseMapper();
@@ -37,7 +38,7 @@ const fetchNominatim = async (location: RequestBody['location']) => {
 
 const fetchOverpass = async (location: RequestBody['location']) => {
     const body = `
-        [out:json][timeout:25];
+        [out:json][timeout:${timeout}];
         nwr(around:${overpassRadius},${location.latitude},${location.longitude})->.all;
         (
         nwr.all["name:en"];

@@ -5,6 +5,7 @@ import buildResponse from "../util/response_builder";
 const overpassURl = "https://overpass-api.de/api/interpreter";
 const overpassOptions = {headers: {"Content-Type": "text/plain", "Accept-Language": "en"}};
 const overpassResponseMapper = new OverpassResponseMapper();
+const timeout = 100;
 
 type RequestBody = {
     south: number,
@@ -15,7 +16,7 @@ type RequestBody = {
 
 const fetchOverpass = async (box: RequestBody) => {
     const body = `
-    [out:csv(::lat, ::lon; true; ";")][timeout:25][bbox:${box.south},${box.west},${box.north},${box.east}];
+    [out:csv(::lat, ::lon; true; ";")][timeout:${timeout}][bbox:${box.south},${box.west},${box.north},${box.east}];
     nwr[amenity=bar];
     out center;
     `
