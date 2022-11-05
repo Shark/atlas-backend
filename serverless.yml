@@ -21,20 +21,20 @@ useDotenv: true
 
 # The `functions` block defines what code to deploy
 functions:
-  openaiRequest:
-    handler: handler.openaiRequest
+  requestOpenai:
+    handler: handler.requestOpenai
     # The `events` block defines how to trigger the handler.helloWorld code
     events:
       - http:
-          path: openaiRequest
+          path: requestOpenai
           method: post
           cors: true
 
-  createPrompt:
-    handler: handler.createPrompt
+  getSurroundingNodes:
+    handler: handler.getSurroundingNodes
     # The `events` block defines how to trigger the handler.helloWorld code
     events:
       - http:
-          path: createPrompt
+          path: getSurroundingNodes
           method: post
           cors: true

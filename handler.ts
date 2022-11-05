@@ -1,7 +1,7 @@
-const createPrompt = require('./functions/create_prompt');
-const openaiRequest = require('./functions/openai_request');
+const getSurroundingNodes = require('./functions/get_surrounding_nodes');
+const requestOpenai = require('./functions/request_openai');
 
 module.exports = {
-  createPrompt,
-  openaiRequest,
+  getSurroundingNodes,
+  requestOpenai,
 }

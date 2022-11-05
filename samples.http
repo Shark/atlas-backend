@@ -1,4 +1,4 @@
-POST http://localhost:3000/openaiRequest
+POST http://localhost:3000/requestOpenai
 Content-Type: application/json
 
 {
@@ -7,7 +7,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/createPrompt
+POST http://localhost:3000/getSurroundingNodes
 Content-Type: application/json
 
 {
