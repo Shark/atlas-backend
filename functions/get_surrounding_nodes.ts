@@ -3,11 +3,6 @@ const axios = require('axios');
 // import responseBuilder
 import buildResponse from '../util/response_builder';
 
-// TODO: read params
-// TODO: fetch city/country from geo api
-// TODO: fetch from OSM api
-// TODO: pass to felix for further processing
-
 const overpassURl = "https://overpass-api.de/api/interpreter";
 const overpassOptions = {headers: {"Content-Type": "text/plain"}};
 const overpassRadius = 250;

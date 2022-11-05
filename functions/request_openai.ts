@@ -11,8 +11,8 @@ module.exports = async (event: {prompt: String}, context: any, callback: Functio
     try {
         const openaiResponse = await openai.createImage({
             prompt: event.prompt,
-            n: 1,
-            size: "256x256",
+            n: 1, // number of images to return
+            size: "256x256", // possible: "256x256", "512x512", "1024x1024"
         });
 
         const imageUrl = openaiResponse.data.data[0].url;
