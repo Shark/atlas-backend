@@ -65,7 +65,7 @@ module.exports = async (event: RequestBody, context: any, callback: Function) =>
     var nominatimResponse, overpassResponse;
     try {
         [nominatimResponse, overpassResponse] = await Promise.all([fetchNominatim(location), fetchOverpass(location)]);
-    } catch (error) {
+    } catch (error: any) {
         return callback(null, buildResponse({reason: error.cause, error: error.message}, 400));
     }
 
