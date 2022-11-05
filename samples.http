@@ -12,7 +12,7 @@ Content-Type: application/json
 
 {
   "location": {
-    "latitude": 37.7749295,
-    "longitude": -122.084
+    "latitude": 60.184720,
+    "longitude": 24.832324
   }
 }

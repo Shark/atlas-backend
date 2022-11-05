@@ -1,11 +1,17 @@
 const axios = require('axios');
+import { point } from "@turf/turf";
 
-// import responseBuilder
+
 import buildResponse from '../util/response_builder';
+import { OverpassResponseMapper } from '../model/mapper/overpass';
+import { NominatimResponseMapper } from '../model/mapper/nominatim';
 
 const overpassURl = "https://overpass-api.de/api/interpreter";
 const overpassOptions = {headers: {"Content-Type": "text/plain"}};
-const overpassRadius = 250;
+const overpassRadius = 10_000;
+
+const nominatimResponseMapper = new NominatimResponseMapper();
+const overpassResponseMapper = new OverpassResponseMapper();
 
 
 type RequestBody = {
@@ -32,11 +38,49 @@ const fetchNominatim = async (location: RequestBody['location']) => {
 const fetchOverpass = async (location: RequestBody['location']) => {
     const body = `
         [out:json][timeout:25];
+        nwr(around:${overpassRadius},${location.latitude},${location.longitude})->.all;
         (
-        node(around:${overpassRadius},${location.latitude},${location.longitude});
-        <<;
+        nwr.all["name:en"];
+        nwr.all[wikipedia];
+        )->.important;
+        (
+        nwr.important[aerialway];
+        nwr.important[aeroway];
+        nwr.important[amenity=place_of_worship];
+        nwr.important[amenity=fountain];
+        nwr.important[amenity=college];
+        nwr.important[amenity=university];
+        nwr.important[amenity=theatre];
+        nwr.important[amenity=arts_theatre];
+        nwr.important[boundary=national_park];
+        nwr.important[building=train_station];
+        nwr.important[historic=yes];
+        nwr.important[historic=aqueduct];
+        nwr.important[historic=battlefield];
+        nwr.important[historic=building];
+        nwr.important[historic=church];
+        nwr.important[historic=city_gate];
+        nwr.important[historic=citywalls];
+        nwr.important[historic=district];
+        nwr.important[historic=monument];
+        nwr.important[historic=ruins];
+        nwr.important[historic=ship];
+        nwr.important[historic=tomb];
+        nwr.important[historic=tower];
+        nwr.important[landuse=vineyard];
+        nwr.important[leisure=sauna];
+        nwr.important[leisure=fishing];
+        nwr.important[leisure=water_park];
+        nwr.important[leisure=beach_resort];
+        nwr.important[leisure=swimming_area];
+        nwr.important[man_made=tower];
+        nwr.important[man_made=bridge];
+        nwr.important[tourism=attraction];
+        nwr.important[water];
+        nwr.important[waterway=river];
+        nwr.important[waterway=dam];
         );
-        out;
+        out tags center;
     `;
 
     var response: any;
@@ -69,13 +113,8 @@ module.exports = async (event: RequestBody, context: any, callback: Function) =>
         return callback(null, buildResponse({reason: error.cause, error: error.message}, 400));
     }
 
-    console.log(nominatimResponse);
-    console.log(overpassResponse);
+    const locations = nominatimResponseMapper.map(nominatimResponse);
+    const features = overpassResponseMapper.map(overpassResponse, point([location.latitude, location.longitude]));
 
-    // TODO: const nodeResult = nodeParser(overpassResponse); // passes array of nodes
-    // TODO: const prompt = wireUpPrompt(nominatimResponse, nodeResult); // pass city/country and nodes
-
-    // TODO: build response
-    const prompt = "This is a test prompt.";
-    callback(null, buildResponse({prompt}, 200));
+    callback(null, buildResponse({locations, features}, 200));
 }
