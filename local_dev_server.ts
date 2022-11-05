@@ -1,9 +1,11 @@
 require('dotenv').config()
 const express = require("express");
 const handler = require("./handler")
+const cors = require('cors')
 
 const app = express();
 app.use(express.json())
+app.use(cors());
 
 app.post('*', (req: any, res: any) => {
     const path = req.path.slice(1); // slices out first '/
