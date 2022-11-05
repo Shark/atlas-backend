@@ -1,4 +1,5 @@
-const buildResponse = (body: object, statusCode: number = 200) => {
+const buildResponse = (body: any, statusCode: number = 200) => {
+    body.success = statusCode < 400;
     return {
         statusCode: statusCode,
         headers: {

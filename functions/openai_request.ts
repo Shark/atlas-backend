@@ -16,19 +16,10 @@ module.exports = async (event: {prompt: String}, context: any, callback: Functio
         });
 
         const imageUrl = openaiResponse.data.data[0].url;
-        const responseBody = {
-            success: true,
-            url: imageUrl,
-        }
 
-        callback(null, buildResponse(responseBody));
+        callback(null, buildResponse({url: imageUrl}));
     } catch(error) {
         const errorMessage = error.response.data.error.message;
-        const responseBody = {
-            success: false,
-            error: errorMessage,
-        }
-
-        callback(null, buildResponse(responseBody, 400));
+        callback(null, buildResponse({reason: "OpenaiErrorclass", error: errorMessage}, 400));
     }
 }
