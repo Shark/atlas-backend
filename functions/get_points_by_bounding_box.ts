@@ -1,8 +1,10 @@
 import axios from "axios";
+import { OverpassResponseMapper } from "../model/mapper/overpass";
 import buildResponse from "../util/response_builder";
 
 const overpassURl = "https://overpass-api.de/api/interpreter";
 const overpassOptions = {headers: {"Content-Type": "text/plain"}};
+const overpassResponseMapper = new OverpassResponseMapper();
 
 type RequestBody = {
     south: number,
@@ -28,7 +30,6 @@ const fetchOverpass = async (box: RequestBody) => {
             .filter((line: string) => line.includes("error"))
             .map((line: string) => line.replace(/(<([^>]+)>)/gi, ""));
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         throw new Error(`${error.message}: ${mapped.join(",")}`, {cause: "OverpassError"});
     }
@@ -44,8 +45,14 @@ module.exports = async (event: RequestBody, context: any, callback: Function) =>
         return callback(null, buildResponse({reason: error.cause, error: error.message}, 400));
     }
 
+    const clusters = overpassResponseMapper.cluster(overpassResponse);
+    const points = clusters.map((cluster: any) => {
+        const coordinates = cluster.geometry.coordinates;
+        return {
+            latitude: coordinates[1],
+            longitude: coordinates[0],
+        }
+    });
 
-    // TODO: do some felix magic
-
-    return callback(null, buildResponse(overpassResponse));
+    return callback(null, buildResponse(points));
 }

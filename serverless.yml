@@ -23,7 +23,6 @@ useDotenv: true
 functions:
   requestOpenai:
     handler: handler.requestOpenai
-    # The `events` block defines how to trigger the handler.helloWorld code
     events:
       - http:
           path: requestOpenai
@@ -32,9 +31,16 @@ functions:
 
   getSurroundingNodes:
     handler: handler.getSurroundingNodes
-    # The `events` block defines how to trigger the handler.helloWorld code
     events:
       - http:
           path: getSurroundingNodes
+          method: post
+          cors: true
+
+  getPointsByBoundingBox:
+    handler: handler.getPointsByBoundingBox
+    events:
+      - http:
+          path: getPointsByBoundingBox
           method: post
           cors: true

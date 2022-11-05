@@ -30,12 +30,14 @@ Content-Type: application/json
   }
 }
 
+###
+
 POST http://localhost:3000/getPointsByBoundingBox
 Content-Type: application/json
 
 {
-  "south": 60.184720,
-  "west": 24.832324,
-  "north": 60.184720,
-  "east": 24.832324
+  "south": 59.9371,
+  "west": 24.2084,
+  "north": 60.4301,
+  "east": 25.4361
 }
