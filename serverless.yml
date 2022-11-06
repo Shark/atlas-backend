@@ -11,36 +11,33 @@ frameworkVersion: '3'
 
 # The `provider` block defines where your service will be deployed
 provider:
-  name: aws
-  runtime: nodejs12.x
+  name: google
+  runtime: nodejs16
+  region: europe-west1
+  project: junction-hack22esp-7041
+  credentials: ~/Downloads/junction-hack22esp-7041-5ecd84a397ee.json
+  environment:
+    OPENAI_API_KEY: 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
 
 plugins:
   - serverless-plugin-typescript
+  - serverless-google-cloudfunctions
 
 useDotenv: true
 
 # The `functions` block defines what code to deploy
 functions:
   requestOpenai:
-    handler: handler.requestOpenai
+    handler: requestOpenai
     events:
-      - http:
-          path: requestOpenai
-          method: post
-          cors: true
+      - http: true
 
   getSurroundingNodes:
-    handler: handler.getSurroundingNodes
+    handler: getSurroundingNodes
     events:
-      - http:
-          path: getSurroundingNodes
-          method: post
-          cors: true
+      - http: true
 
   getPointsByBoundingBox:
-    handler: handler.getPointsByBoundingBox
+    handler: getPointsByBoundingBox
     events:
-      - http:
-          path: getPointsByBoundingBox
-          method: post
-          cors: true
+      - http: true

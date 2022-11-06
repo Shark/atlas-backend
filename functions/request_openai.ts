@@ -1,11 +1,10 @@
-import axios from "axios";
 import fs from 'fs';
 import { Configuration, OpenAIApi } from "openai";
 import { v4 as uuidv4 } from 'uuid';
 const configuration = new Configuration({apiKey: process.env.OPENAI_API_KEY});
 const openai = new OpenAIApi(configuration);
 
-import buildResponse from '../util/response_builder';
+import buildResponse from '../util/response_builder.js';
 
 const numberOfImages = 3;
 const imageSize = "256x256"; // possible: "256x256", "512x512", "1024x1024"
@@ -62,7 +61,7 @@ const withoutImages = async (event: RequestBody, callback: Function) => {
     }
 }
 
-module.exports = async (event: RequestBody, context: any, callback: Function) => {
+export default async (event: RequestBody, context: any, callback: Function) => {
     if (event.images) {
         withImages(event, callback);
     } else {

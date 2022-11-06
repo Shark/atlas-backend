@@ -1,7 +1,8 @@
-require('dotenv').config()
-const express = require("express");
-const handler = require("./handler")
-const cors = require('cors')
+import * as dotenv from 'dotenv'
+dotenv.config();
+import express from 'express'
+import handler from './index.js';
+import cors from 'cors';
 
 const app = express();
 app.use(cors());
@@ -11,6 +12,7 @@ app.post('*', (req: any, res: any) => {
     const path = req.path.slice(1); // slices out first '/'
 
     // call handler with body, context as null and response handler callback
+    // @ts-ignore
     handler[path](req.body, null, (_: any, response: any) => {
         const {statusCode, headers, body} = response;
 
@@ -20,6 +22,6 @@ app.post('*', (req: any, res: any) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log('Local dev server listening on port 3000');
+app.listen(8000, () => {
+    console.log('Server listening on port 8000');
 });

@@ -1,11 +1,11 @@
 
 import test from 'ava';
 import { point } from "@turf/turf";
-import { NominatimResponseMapper } from '../model/mapper/nominatim';
-import { OverpassResponseMapper } from '../model/mapper/overpass';
-import NominatimResult from './fixtures/cologne/nominatim.json';
-import OverpassResult from './fixtures/cologne/overpass.json';
-import OverpassResult2 from './fixtures/cologne/overpass2.json';
+import { NominatimResponseMapper } from '../model/mapper/nominatim.js';
+import { OverpassResponseMapper } from '../model/mapper/overpass.js';
+import NominatimResult from './fixtures/cologne/nominatim.js';
+import OverpassResult from './fixtures/cologne/overpass.js';
+import OverpassResult2 from './fixtures/cologne/overpass2.js';
 
 test('nominatim', t => {
 	const mapper = new NominatimResponseMapper();

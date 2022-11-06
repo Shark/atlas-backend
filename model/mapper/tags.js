@@ -1,4 +1,4 @@
-{
+export default {
   "aerialway=station": "ski lift",
   "aerialway=chair_lift": "ski lift",
   "aerialway=drag_lift": "ski lift",

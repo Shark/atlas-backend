@@ -1,4 +1,4 @@
-{
+export default {
   "place_id": 297820506,
   "licence": "Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
   "osm_type": "relation",

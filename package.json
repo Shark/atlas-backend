@@ -1,6 +1,7 @@
 {
+  "type": "module",
   "scripts": {
-    "local_dev_server": "npx ts-node local_dev_server",
+    "local_dev_server": "npx ts-node-esm local_dev_server",
     "compile": "tsc",
     "compile:watch": "tsc -w",
     "test": "ava",
@@ -8,11 +9,13 @@
     "clean": "find tmp ! -name '.keep' -type f -exec rm -f {} +; rm -r .build"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.14",
     "@types/node": "^18.11.9",
     "@types/uuid": "^8.3.4",
     "ava": "^5.0.1",
     "dotenv": "^16.0.3",
+    "serverless-google-cloudfunctions": "^4.6.0",
     "serverless-plugin-typescript": "^2.1.4",
     "ts-node": "^10.9.1",
     "tslib": "^2.4.1",

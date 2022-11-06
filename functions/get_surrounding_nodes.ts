@@ -1,10 +1,9 @@
-import axios from 'axios';
+import axios from "axios";
 import { point } from "@turf/turf";
 
-
-import buildResponse from '../util/response_builder';
-import { OverpassResponseMapper } from '../model/mapper/overpass';
-import { NominatimResponseMapper } from '../model/mapper/nominatim';
+import buildResponse from '../util/response_builder.js';
+import { OverpassResponseMapper } from '../model/mapper/overpass.js';
+import { NominatimResponseMapper } from '../model/mapper/nominatim.js';
 
 const overpassURl = "https://overpass-api.de/api/interpreter";
 const overpassOptions = {headers: {"Content-Type": "text/plain", "Accept-Language": "en"}};
@@ -104,7 +103,7 @@ const fetchOverpass = async (location: RequestBody['location']) => {
 
 
 
-module.exports = async (event: RequestBody, context: any, callback: Function) => {
+export default async (event: RequestBody, context: any, callback: Function) => {
     const location = event.location;
 
     var nominatimResponse, overpassResponse;

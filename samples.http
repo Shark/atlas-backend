@@ -1,4 +1,9 @@
-POST http://localhost:3000/requestOpenai
+// @scheme = http
+// @host = localhost:3000
+@scheme = https
+@host = atlas-backend-pabexhlv4a-ew.a.run.app
+
+POST {{scheme}}://{{host}}/requestOpenai
 Content-Type: application/json
 
 {
@@ -11,7 +16,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/requestOpenai
+POST {{scheme}}://{{host}}/requestOpenai
 Content-Type: application/json
 
 {
@@ -20,7 +25,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/getSurroundingNodes
+POST {{scheme}}://{{host}}/getSurroundingNodes
 Content-Type: application/json
 
 {
@@ -32,7 +37,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/getPointsByBoundingBox
+POST {{scheme}}://{{host}}/getPointsByBoundingBox
 Content-Type: application/json
 
 {

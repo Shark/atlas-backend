@@ -1,7 +1,7 @@
 import { distance, point, Coord, clustersDbscan, featureCollection, convex, centroid } from "@turf/turf";
 import { parse } from 'csv-parse/sync';
-import { Feature } from "../place";
-import Tags from './tags.json';
+import { Feature } from "../place.js";
+import Tags from './tags.js';
 
 export class OverpassResponseMapper {
   // response is supposed to be a parsed JSON object, not a string

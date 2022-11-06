@@ -1,6 +1,6 @@
 import axios from "axios";
-import { OverpassResponseMapper } from "../model/mapper/overpass";
-import buildResponse from "../util/response_builder";
+import { OverpassResponseMapper } from "../model/mapper/overpass.js";
+import buildResponse from "../util/response_builder.js";
 
 const overpassURl = "https://overpass-api.de/api/interpreter";
 const overpassOptions = {headers: {"Content-Type": "text/plain", "Accept-Language": "en"}};
@@ -38,7 +38,7 @@ const fetchOverpass = async (box: RequestBody) => {
     return response.data;
 }
 
-module.exports = async (event: RequestBody, context: any, callback: Function) => {
+export default async (event: RequestBody, context: any, callback: Function) => {
     var overpassResponse;
     try {
         overpassResponse = await fetchOverpass(event);

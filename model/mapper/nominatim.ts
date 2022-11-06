@@ -1,4 +1,4 @@
-import { Location } from "../place";
+import { Location } from "../place.js";
 
 export class NominatimResponseMapper {
   // response is supposed to be a parsed JSON object, not a string
