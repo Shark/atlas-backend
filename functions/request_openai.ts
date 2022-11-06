@@ -7,7 +7,7 @@ const openai = new OpenAIApi(configuration);
 import buildResponse from '../util/response_builder.js';
 
 const numberOfImages = 3;
-const imageSize = "256x256"; // possible: "256x256", "512x512", "1024x1024"
+const imageSize = "1024x1024"; // possible: "256x256", "512x512", "1024x1024"
 
 type RequestBody = {
     prompt: string;
