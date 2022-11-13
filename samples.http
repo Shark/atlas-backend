@@ -1,10 +1,11 @@
-// @scheme = http
-// @host = localhost:3000
-@scheme = https
-@host = atlas-backend-pabexhlv4a-ew.a.run.app
+@scheme = http
+@host = localhost:3000
+# @scheme = https
+# @host = atlas-backend.fly.dev
 
 POST {{scheme}}://{{host}}/requestOpenai
 Content-Type: application/json
+Authorization: Bearer token
 
 {
   "prompt": "a sunlit indoor lounge area with a pool containing a flamingo",
